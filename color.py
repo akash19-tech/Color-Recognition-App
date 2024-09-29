@@ -19,7 +19,7 @@ def recognize_color(R, G, B, csv):
 def load_image():
     uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
     if uploaded_file is not None:
-        image = Image.open(uploaded_file)
+        image = Image.open(uploaded_file).convert('RGB')  # Convert to RGB for consistency
         return np.array(image)
     return None
 
@@ -88,13 +88,18 @@ def main():
     st.markdown("<h1 class='title'>Color Recognition App</h1>", unsafe_allow_html=True)
     st.markdown("<h2 class='subtitle'>Upload an image and click to detect colors!</h2>", unsafe_allow_html=True)
 
+    # Ensure 'colors.csv' path is correct, adjust if necessary
+    csv_file_path = 'colors.csv'  # Replace with the correct path if needed
     index = ["color", "color_name", "hex", "R", "G", "B"]
-    csv = pd.read_csv('colors.csv', names=index, header=None)
+    csv = pd.read_csv(csv_file_path, names=index, header=None)
 
     # Upload and display the image
     img = load_image()
 
     if img is not None:
+        # Display the uploaded image as a fallback
+        st.image(img, caption="Uploaded Image", use_column_width=True)
+
         # Create a drawable canvas where users can click on the image
         canvas_result = st_canvas(
             fill_color="rgba(0, 0, 0, 0)",  # Transparent background
@@ -112,12 +117,19 @@ def main():
             for obj in canvas_result.json_data["objects"]:
                 x, y = int(obj["left"]), int(obj["top"])
 
-                # Get the RGB values of the selected pixel
-                b, g, r = img[y, x]
-                color_name = recognize_color(r, g, b, csv)
-                
-                # Display color info.
-                st.markdown(f"<div class='color-output'>Color at ({x},{y}): {color_name} (R={r}, G={g}, B={b})</div>", unsafe_allow_html=True)
+                # Check if the click is within the image bounds
+                if 0 <= x < img.shape[1] and 0 <= y < img.shape[0]:
+                    # Get the RGB values of the selected pixel
+                    b, g, r = img[y, x]
+                    color_name = recognize_color(r, g, b, csv)
+                    
+                    # Display color info
+                    st.markdown(f"<div class='color-output'>Color at ({x},{y}): {color_name} (R={r}, G={g}, B={b})</div>", unsafe_allow_html=True)
+                else:
+                    st.error("Clicked outside the image bounds!")
+    else:
+        st.warning("Please upload an image to proceed.")
 
 if __name__ == '__main__':
     main()
+
