@@ -55,6 +55,27 @@ def add_custom_css():
             color: #007bff;  /* Blue text color */
             margin: 10px;  /* Margin for spacing */
         }
+        .color-box {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            border: 2px solid #343a40;
+            border-radius: 5px;
+        }
+        .button {
+            background-color: #007bff;  /* Blue button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background-color: #0056b3;  /* Darker blue on hover */
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -80,10 +101,10 @@ def main():
         canvas_result = st_canvas(
             fill_color="rgba(0, 0, 0, 0)",  # Transparent background
             stroke_width=1,
-            background_image=Image.fromarray(img),
+            background_image=Image.fromarray(img),  # Ensure this line displays the image on canvas
             update_streamlit=True,
-            height=img.shape[0],
-            width=img.shape[1],
+            height=img.shape[0],  # Set the canvas height to image height
+            width=img.shape[1],  # Set the canvas width to image width
             drawing_mode="freedraw",
             key="canvas",
         )
@@ -108,3 +129,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
