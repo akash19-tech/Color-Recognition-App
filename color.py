@@ -55,27 +55,6 @@ def add_custom_css():
             color: #007bff;  /* Blue text color */
             margin: 10px;  /* Margin for spacing */
         }
-        .color-box {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            margin: 5px;
-            border: 2px solid #343a40;
-            border-radius: 5px;
-        }
-        .button {
-            background-color: #007bff;  /* Blue button */
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 18px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .button:hover {
-            background-color: #0056b3;  /* Darker blue on hover */
-        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -97,9 +76,6 @@ def main():
     img = load_image()
 
     if img is not None:
-        # Display the uploaded image as a fallback
-        st.image(img, caption="Uploaded Image", use_column_width=True)
-
         # Create a drawable canvas where users can click on the image
         canvas_result = st_canvas(
             fill_color="rgba(0, 0, 0, 0)",  # Transparent background
@@ -132,4 +108,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
