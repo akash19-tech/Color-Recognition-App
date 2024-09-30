@@ -101,7 +101,7 @@ def main():
         canvas_result = st_canvas(
             fill_color="rgba(0, 0, 0, 0)",  # Transparent background
             stroke_width=1,
-            background_image=Image.fromarray(img),  # Ensure this line displays the image on canvas
+            background_image=Image.fromarray(img),  # Use the image in the canvas
             update_streamlit=True,
             height=img.shape[0],  # Set the canvas height to image height
             width=img.shape[1],  # Set the canvas width to image width
@@ -129,4 +129,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
